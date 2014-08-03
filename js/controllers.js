@@ -17,6 +17,19 @@ sysMarketControllers.controller('ItemListCtrl', ['$scope', '$route', '$routePara
 sysMarketControllers.controller('AddItemCtrl', ['$scope', '$route', '$routeParams',
     function($scope, $route, $routeParams) {
         updateNavClasses($route.current.$$route.originalPath);
+
+        $('#addItemBtn').click(function() {
+            //collect the offer info
+            var offerTitle = $('#inputTitle').val();
+            var offerCategory = $('#inputCategory').val();
+            var offerQuantity = $('#inputQuantity').val();
+            var offerDescription = $('#inputDescription').val();
+            var offerPrice = $('#inputPrice').val();
+
+            //call Syscoin
+
+        });
+
     }]);
 
 function updateNavClasses(currentRoute) {
