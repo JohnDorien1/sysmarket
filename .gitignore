@@ -2,3 +2,4 @@ bower_components
 .DS_Store
 .idea
 SyscoinMarketplace.iml
+api-app/node_modules
