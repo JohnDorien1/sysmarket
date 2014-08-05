@@ -13,6 +13,13 @@ var syscoin = require('syscoin');
 // this will let us get the data from a POST
 app.use(bodyParser());
 
+//ENABLE CORS
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 //create syscoin client for RPC commands
 var sysclient = new syscoin.Client({
     host: 'localhost',
@@ -33,15 +40,11 @@ router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
-
 //SYSCOIN JSON-RPC API
 router.get('/additem', function(req, res) {
     //category, title, quantity, price, [description], callback
-    sysclient.offerNew('debug/sysmarket', 'Test SysMarket Offer', '1', '100', 'offer description', function(err, result, resHeaders) {
+    console.log('additem: offernew(' + req.query.category + ', ' + req.query.title + ', ' + req.query.quantity + ', ' + req.query.price + ', ' + req.query.description + ')');
+    sysclient.offerNew(req.query.category, req.query.title, req.query.quantity, req.query.price, req.query.description, function(err, result, resHeaders) {
         if (err) {
             res.json({ error : err });
             console.log(err);

@@ -1,4 +1,4 @@
-var sysMarketControllers = angular.module('sysMarketControllers', []);
+var sysMarketControllers = angular.module('sysMarketControllers', ['sysmarket.services']);
 
 sysMarketControllers.controller('HomeCtrl', ['$scope', '$route',
     function ($scope, $route) {
@@ -14,20 +14,22 @@ sysMarketControllers.controller('ItemListCtrl', ['$scope', '$route', '$routePara
         updateNavClasses($route.current.$$route.originalPath);
     }]);
 
-sysMarketControllers.controller('AddItemCtrl', ['$scope', '$route', '$routeParams',
-    function($scope, $route, $routeParams) {
+sysMarketControllers.controller('AddItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService',
+    function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
 
         $('#addItemBtn').click(function() {
+            console.log("controller click");
+
             //collect the offer info
-            var offerTitle = $('#inputTitle').val();
-            var offerCategory = $('#inputCategory').val();
-            var offerQuantity = $('#inputQuantity').val();
-            var offerDescription = $('#inputDescription').val();
-            var offerPrice = $('#inputPrice').val();
+            var category = $('#inputCategory').val();
+            var title = $('#inputTitle').val();
+            var quantity = $('#inputQuantity').val();
+            var price = $('#inputPrice').val();
+            var description = $('#inputDescription').val();
 
             //call Syscoin
-
+            syscoinService.addItem(category, title, quantity, price, description);
         });
 
     }]);
