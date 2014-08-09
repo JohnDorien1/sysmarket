@@ -1,5 +1,5 @@
-bower_components
+app/node_modules
+app/bower_components
+api-app/node_modules
 .DS_Store
 .idea
-SyscoinMarketplace.iml
-api-app/node_modules
