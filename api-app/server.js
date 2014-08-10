@@ -45,18 +45,51 @@ router.get('/additem', function(req, res) {
     //category, title, quantity, price, [description], callback
     console.log('additem: offernew(' + req.query.category + ', ' + req.query.title + ', ' + req.query.quantity + ', ' + req.query.price + ', ' + req.query.description + ')');
     sysclient.offerNew(req.query.category, req.query.title, req.query.quantity, req.query.price, req.query.description, function(err, result, resHeaders) {
-        if (err) {
-            res.json({ error : err });
-            console.log(err);
-            return;
-        }
+        handleError(err);
 
-        res.json({ hash : result[0], rand : result[1]});
+        var offernew = { hash : result[0], guid : result[1]};
         console.log('additem: offernew result = ', result);
+
+        //activate the offer
+        console.log('additem: offeractivate(' + offernew.guid + ')');
+        sysclient.offerActivate(offernew.guid, function(err, result, resHeaders) {
+            handleError(err);
+
+            var offeractivate = { hash: result[0] };
+            console.log('additem: offeractivate result = ', result);
+            res.json(offeractivate);
+        });
+
     });
 });
 
-// more routes for our API will happen here
+router.get('/getpendingitems', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getpendingitems: listtransactions("")');
+    sysclient.listTransactions("", function(err, result, resHeaders) {
+        handleError(err);
+
+        console.log('getpendingitems: getpendingitems result = ', result);
+        var pendingItemCount = 0;
+        for(var i = 0; i < result.length; i++) {
+            if(result[i].address.indexOf("offeractivate") != -1 && result[i].confirmations == 0) {
+                pendingItemCount ++;
+            }
+        }
+
+        res.json({ pendingItems: pendingItemCount });
+    });
+});
+
+//general functions
+function handleError(err) {
+    if (err) {
+        res.json({ error : err });
+        console.log(err);
+        return;
+    }
+}
+
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

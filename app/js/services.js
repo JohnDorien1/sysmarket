@@ -23,7 +23,18 @@ angular.module('sysMarket.services', [])
             });
 
             return( request.then( handleSuccess, handleError ) );
+        }
 
+        var getPendingItems = function() {
+            console.log("getPendingItems()");
+            var request = $http({
+                method: "get",
+                url: "http://localhost:8080/api/getpendingitems",
+                params: {
+                }
+            });
+
+            return( request );
         }
 
 
@@ -58,13 +69,14 @@ angular.module('sysMarket.services', [])
         // I transform the successful response, unwrapping the application data
         // from the API response payload.
         function handleSuccess( response ) {
-
+            console.log("res:", response);
             return( response.data );
 
         }
 
         // Return public API.
         return {
-            addItem: function(category, title, quantity, price, description) { return addItem(category, title, quantity, price, description); }
+            addItem: function(category, title, quantity, price, description) { return addItem(category, title, quantity, price, description); },
+            getPendingItems: function() { return getPendingItems(); }
         };
     }]);

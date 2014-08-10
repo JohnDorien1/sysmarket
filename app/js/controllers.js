@@ -18,6 +18,13 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
     .controller('AddItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
 
+        //see if there are any pending items to list
+        var request  = syscoinService.getPendingItems();
+        request.then(function(response) {
+            $scope.pendingItems = response.data.pendingItems;
+            console.log("PENDING: " + $scope.pendingItems);
+        });
+
         $('#addItemBtn').click(function() {
             console.log("controller click");
 
