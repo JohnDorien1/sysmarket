@@ -1,7 +1,11 @@
 body {
   padding-top: 50px;
 }
-.starter-template {
+.template {
   padding: 40px 15px;
   text-align: center;
+}
+
+.item-row {
+    text-align: left;
 }

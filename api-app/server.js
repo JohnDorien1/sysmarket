@@ -81,6 +81,46 @@ router.get('/getpendingitems', function(req, res) {
     });
 });
 
+router.get('/getitems', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getitems: offerlist("")');
+    sysclient.offerList("", function(err, result, resHeaders) {
+        handleError(err);
+
+        console.log('getitems: offerlist result = ', result);
+
+        //iterate over all of the offers and get the full data
+        var items = new Array();
+        var totalItems = result.length;
+        var callbacks = 0;
+        for(var i = 0; i < result.length; i++) {
+            sysclient.offerInfo(result[i].name, function(err, result2, resHeaders) {
+                if(result2) { //only add confirmed items
+                    items.push(result2);
+                }
+
+                callbacks++;
+
+                if(callbacks >= totalItems) {
+                    res.json({ items: items });
+                }
+            });
+        }
+    });
+});
+
+router.get('/getitem', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getitem: offerinfo(' + req.query.guid + ')');
+    sysclient.offerInfo(req.query.guid, function(err, result, resHeaders) {
+        handleError(err);
+
+        console.log('getitem: offerinfo result = ', result);
+
+        res.json( result );
+    });
+});
+
 //general functions
 function handleError(err) {
     if (err) {

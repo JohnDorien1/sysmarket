@@ -11,8 +11,30 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         updateNavClasses($route.current.$$route.originalPath);
     }])
 
-    .controller('ItemListCtrl', ['$scope', '$route', '$routeParams', function($scope, $route, $routeParams) {
+    .controller('ItemListCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
+
+        //see if there are any pending items to list
+        var request  = syscoinService.getPendingItems();
+        request.then(function(response) {
+            $scope.pendingItems = response.data.pendingItems;
+        });
+
+        //get active item list
+        var request  = syscoinService.getItems();
+        request.then(function(response) {
+            $scope.items = response.data.items;
+            console.log("got items:", $scope.items);
+        });
+    }])
+
+    .controller('ItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        //get item detail
+        var request  = syscoinService.getItem($routeParams.guid);
+        request.then(function(response) {
+            $scope.item = response.data;
+            console.log("Got item info: ", response.data);
+        });
     }])
 
     .controller('AddItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
@@ -22,7 +44,6 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         var request  = syscoinService.getPendingItems();
         request.then(function(response) {
             $scope.pendingItems = response.data.pendingItems;
-            console.log("PENDING: " + $scope.pendingItems);
         });
 
         $('#addItemBtn').click(function() {
