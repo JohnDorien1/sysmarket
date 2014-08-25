@@ -84,32 +84,24 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
                   for(var i = 0; i < data.length; i++){
                        items.push(data[i].accepts.txid);
                        items.push(data[i].accepts.quantity);
-<<<<<<< HEAD
                        };
-=======
-                       }
->>>>>>> 98c66fc38f227ba105be91cfd348f189e99acf04
-            
+                       
+
             //Do the final calculation (Divindend / Shares * AmountSharesOwned)
             var total_dividend = $('#inputCategory').val();
             var total_shares=0;
               for(var i = 0; i < items.length; i++){
                 total_shares += items[i][i];
-<<<<<<< HEAD
               };
-=======
-              }
->>>>>>> 98c66fc38f227ba105be91cfd348f189e99acf04
+              
+
             var div_per_share = total_dividend / total_shares;
             var share = 0;
               for (var i = 0; i < items.length){
                 share = items[i][i] * div_per_share;
                 items.push(share);
-<<<<<<< HEAD
                 };
-=======
-                }
->>>>>>> 98c66fc38f227ba105be91cfd348f189e99acf04
+                
             //return sendmany string
 
         });
