@@ -12,7 +12,7 @@ angular.module('sysMarket.services', [])
             console.log("addItem(" + category + ", " + title + ", " + quantity + ", " + price + ", " + description + ")");
             var request = $http({
                 method: "get",
-                url: "http://localhost:8080/api/additem",
+                url: "http://188.226.131.93:81/api/additem",
                 params: {
                     category: category,
                     title: title,
@@ -29,7 +29,7 @@ angular.module('sysMarket.services', [])
             console.log("getPendingItems()");
             var request = $http({
                 method: "get",
-                url: "http://localhost:8080/api/getpendingitems",
+                url: "http://188.226.131.93:81/api/getpendingitems",
                 params: {
                 }
             });
@@ -41,7 +41,7 @@ angular.module('sysMarket.services', [])
             console.log("getItems()");
             var request = $http({
                 method: "get",
-                url: "http://localhost:8080/api/getitems",
+                url: "http://188.226.131.93:81/api/getitems",
                 params: {
                 }
             });
@@ -49,11 +49,23 @@ angular.module('sysMarket.services', [])
             return( request );
         }
 
+        var getcertissuers = function() {
+            console.log("getcertissuers()");
+            var request = $http({
+                method: "get",
+                url: "http://188.226.131.93:81/api/getcertissuers",
+                params: {
+                }
+            });
+
+            return( request );
+        }
+        
         var getItem = function(guid) {
             console.log("getItem( " + guid + ")");
             var request = $http({
                 method: "get",
-                url: "http://localhost:8080/api/getitem",
+                url: "http://188.226.131.93:81/api/getitem",
                 params: {
                     guid: guid
                 }

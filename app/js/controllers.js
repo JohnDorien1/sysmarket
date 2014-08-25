@@ -36,6 +36,15 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             console.log("Got item info: ", response.data);
         });
     }])
+    
+     .controller('CertCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        //get item detail
+        var request  = syscoinService.getcertissuers($routeParams.guid);
+        request.then(function(response) {
+            $scope.items = response.data;
+            console.log("Got Cert info: ", $scope.items);
+        });
+    }])
 
     .controller('AddItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
@@ -61,10 +70,33 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         });
     }]);
 
+    .controller('DividendCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        updateNavClasses($route.current.$$route.originalPath);
+
+        $('#dividendBtn').click(function() {
+            console.log("controller click");
+            
+            //collect input offerGUID and retrieve info from daemon
+            var title = $('#inputTitle').val();
+            var data = syscoinService.getItem(title);
+            
+            //create a loop to get 1) the buyers address and 2) the amount bought
+                       
+            
+            //Do the final calculation (Divindend / Shares * AmountSharesOwned)
+            var total_dividend = $('#inputCategory').val();
+            
+            //return sendmany string
+
+        });
+    }]);
+    
 function updateNavClasses(currentRoute) {
     $('#home-nav').removeClass("active");
     $('#items-nav').removeClass("active");
+    $('#certs-nav').removeClass("active");
     $('#additem-nav').removeClass("active");
+    $('#dividend-nav').removeClass("active");
 
     switch(currentRoute) {
         case "/":
@@ -77,6 +109,14 @@ function updateNavClasses(currentRoute) {
 
         case "/additem":
             $('#additem-nav').addClass("active");
+            break;
+            
+        case "/getcertissuer":
+            $('#certs-nav').addClass("active");
+            break;
+            
+        case "/dividend":
+            $('#dividend-nav').addClass("active");
             break;
     }
 }
