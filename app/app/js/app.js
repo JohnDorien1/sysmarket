@@ -15,5 +15,6 @@ config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/item/:guid', { controller:'ItemCtrl', templateUrl:'partials/item_detail.html'});
     $routeProvider.when('/additem', { controller:'AddItemCtrl', templateUrl:'partials/add_item.html' });
     $routeProvider.when('/getcertissuer', { controller:'CertCtrl', templateUrl:'partials/certissuer_list.html' });
+    $routeProvider.when('/dividend', { controller:'DividendCtrl', templateUrl:'partials/div_calc.html' });
     $routeProvider.otherwise({ redirectTo:'/' });
 }]);

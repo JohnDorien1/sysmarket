@@ -70,11 +70,33 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         });
     }]);
 
+    .controller('DividendCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        updateNavClasses($route.current.$$route.originalPath);
+
+        $('#dividendBtn').click(function() {
+            console.log("controller click");
+            
+            //collect input offerGUID and retrieve info from daemon
+            var title = $('#inputTitle').val();
+            var data = syscoinService.getItem(title);
+            
+            //create a loop to get 1) the buyers address and 2) the amount bought
+                       
+            
+            //Do the final calculation (Divindend / Shares * AmountSharesOwned)
+            var total_dividend = $('#inputCategory').val();
+            
+            //return sendmany string
+
+        });
+    }]);
+    
 function updateNavClasses(currentRoute) {
     $('#home-nav').removeClass("active");
     $('#items-nav').removeClass("active");
     $('#certs-nav').removeClass("active");
     $('#additem-nav').removeClass("active");
+    $('#dividend-nav').removeClass("active");
 
     switch(currentRoute) {
         case "/":
@@ -90,6 +112,9 @@ function updateNavClasses(currentRoute) {
             break;
         case "/additem":
             $('#certs-nav').addClass("active");
+            break;
+        case "/dividend":
+            $('#dividend-nav').addClass("active");
             break;
     }
 }
