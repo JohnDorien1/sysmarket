@@ -110,9 +110,11 @@ function updateNavClasses(currentRoute) {
         case "/additem":
             $('#additem-nav').addClass("active");
             break;
-        case "/additem":
+            
+        case "/getcertissuer":
             $('#certs-nav').addClass("active");
             break;
+            
         case "/dividend":
             $('#dividend-nav').addClass("active");
             break;
