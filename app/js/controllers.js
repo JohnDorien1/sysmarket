@@ -38,7 +38,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
     }])
     
      .controller('CertCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
-        //get item detail
+        //get certissuers from rpc
         var request  = syscoinService.getcertissuers($routeParams.guid);
         request.then(function(response) {
             $scope.items = response.data;
@@ -68,7 +68,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             //call Syscoin
             syscoinService.addItem(category, title, quantity, price, description);
         });
-    }]);
+    }])
 
     .controller('DividendCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
@@ -84,20 +84,20 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
                   for(var i = 0; i < data.length; i++){
                        items.push(data[i].accepts.txid);
                        items.push(data[i].accepts.quantity);
-                       }
+                       };
             
             //Do the final calculation (Divindend / Shares * AmountSharesOwned)
             var total_dividend = $('#inputCategory').val();
             var total_shares=0;
               for(var i = 0; i < items.length; i++){
                 total_shares += items[i][i];
-              }
+              };
             var div_per_share = total_dividend / total_shares;
             var share = 0;
               for (var i = 0; i < items.length){
                 share = items[i][i] * div_per_share;
                 items.push(share);
-                }
+                };
             //return sendmany string
 
         });

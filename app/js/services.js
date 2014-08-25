@@ -79,6 +79,7 @@ angular.module('sysMarket.services', [])
             addItem: function(category, title, quantity, price, description) { return addItem(category, title, quantity, price, description); },
             getPendingItems: function() { return getPendingItems(); },
             getItems: function() { return getItems(); },
-            getItem: function(guid) { return getItem(guid); }
+            getItem: function(guid) { return getItem(guid); },
+            getcertissuers: function() { return getcertissuers(); }
         };
     }]);
