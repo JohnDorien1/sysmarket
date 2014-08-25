@@ -23,13 +23,13 @@ app.all('*', function(req, res, next) {
 //create syscoin client for RPC commands
 var sysclient = new syscoin.Client({
     host: 'localhost',
-    port: 8368,
-    user: 'syscoinrpc',
-    pass: '4Pkq667pWoCZr37gUDzDRBXUiSq7uTT5Q9fzZjKCtvju',
+    port: 8336,
+    user: 'sdfkjhsdmkfgbhsdmfjhksdhlsdfjieruesdfzheufhsdjf',
+    pass: 'asdfkjdfhvkchbkhadkjwhekfbevsdbdcksjdhfksjkfklshfk',
     timeout: 180000
 });
 
-var port = process.env.PORT || 8080; 		// set our port
+var port = process.env.PORT || 81; 		// set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -84,17 +84,20 @@ router.get('/getpendingitems', function(req, res) {
 router.get('/getitems', function(req, res) {
     //category, title, quantity, price, [description], callback
     console.log('getitems: offerlist("")');
-    sysclient.offerList("", function(err, result, resHeaders) {
-        handleError(err);
+    sysclient.offerScan("1","100", function(err, result, resHeaders) {
+    handleError(err);
 
-        console.log('getitems: offerlist result = ', result);
+    console.log('getitems: offerlist result = ', result);
 
-        //iterate over all of the offers and get the full data
-        var items = new Array();
-        var totalItems = result.length;
-        var callbacks = 0;
-        for(var i = 0; i < result.length; i++) {
-            sysclient.offerInfo(result[i].name, function(err, result2, resHeaders) {
+    //iterate over all of the offers and get the full data
+    var items = new Array();
+    var totalItems = 0;
+    var callbacks = 0;
+    for(var i = 0; i < result.length; i++) {
+        console.log('result[' + i + '].offer = ' +  result[i].offer + ' ' + result[i].expired);
+        if (result[i].hasOwnProperty("expired") == false) {
+            totalItems ++;
+            sysclient.offerInfo(result[i].offer, function(err, result2, resHeaders) {
                 if(result2) { //only add confirmed items
                     items.push(result2);
                 }
@@ -105,7 +108,7 @@ router.get('/getitems', function(req, res) {
                     res.json({ items: items });
                 }
             });
-        }
+        }}
     });
 });
 
@@ -121,6 +124,36 @@ router.get('/getitem', function(req, res) {
     });
 });
 
+router.get('/getcertissuers', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getitems: certissuerscan("")');
+    sysclient.certissuerScan("1","100", function(err, result, resHeaders) {
+    handleError(err);
+
+    console.log('getitems: certissuerscan result = ', result);
+
+    //iterate over all of the offers and get the full data
+    var items = new Array();
+    var totalItems = 0;
+    var callbacks = 0;
+    for(var i = 0; i < result.length; i++) {
+        console.log('result[' + i + '].name = ' +  result[i].value + ' ');
+        if (result[i].value != "") {
+            totalItems ++;
+            sysclient.certissuerInfo(result[i].certissuer, function(err, result2, resHeaders) {
+                if(result2) { //only add confirmed items
+                    items.push(result2);
+                }
+
+                callbacks++;
+
+                if(callbacks >= totalItems) {
+                    res.json({ items: items });
+                }
+            });
+        }}
+    });
+});
 //general functions
 function handleError(err) {
     if (err) {
