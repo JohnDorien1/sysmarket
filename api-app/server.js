@@ -24,8 +24,8 @@ app.all('*', function(req, res, next) {
 var sysclient = new syscoin.Client({
     host: 'localhost',
     port: 8336,
-    user: 'sdfkjhsdmkfgbhsdmfjhksdhlsdfjieruesdfzheufhsdjf',
-    pass: 'asdfkjdfhvkchbkhadkjwhekfbevsdbdcksjdhfksjkfklshfk',
+    user: 'user',
+    pass: 'pass',
     timeout: 180000
 });
 
