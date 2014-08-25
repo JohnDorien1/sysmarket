@@ -37,12 +37,12 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         });
     }])
     
-        .controller('ItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+     .controller('CertCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         //get item detail
-        var request  = syscoinService.getcertissuer($routeParams.guid);
+        var request  = syscoinService.getcertissuers($routeParams.guid);
         request.then(function(response) {
             $scope.items = response.data;
-            console.log("Got item info: ", $scope.items);
+            console.log("Got Cert info: ", $scope.items);
         });
     }])
 
@@ -73,6 +73,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
 function updateNavClasses(currentRoute) {
     $('#home-nav').removeClass("active");
     $('#items-nav').removeClass("active");
+    $('#certs-nav').removeClass("active");
     $('#additem-nav').removeClass("active");
 
     switch(currentRoute) {
@@ -86,6 +87,9 @@ function updateNavClasses(currentRoute) {
 
         case "/additem":
             $('#additem-nav').addClass("active");
+            break;
+        case "/additem":
+            $('#certs-nav').addClass("active");
             break;
     }
 }
