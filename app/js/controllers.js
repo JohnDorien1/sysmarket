@@ -42,7 +42,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         var request  = syscoinService.getcertissuers($routeParams.guid);
         request.then(function(response) {
             $scope.items = response.data;
-            console.log("Got Cert info: ", $scope.items);
+            console.log("Got Cert info: ", response.data);
         });
     }])
 
@@ -80,30 +80,36 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             var title = $('#inputTitle').val();
             var data = syscoinService.getItem(title);
             var items = new Array();
+            var shares = new Array();
             //create a loop to get 1) the buyers address and 2) the amount bought
                   for(var i = 0; i < data.length; i++){
                        items.push(data[i].accepts.txid);
-                       items.push(data[i].accepts.quantity);
-                       };
-                       
-
+                       shares.push(data[i].accepts.quantity);
+                       }
+            
             //Do the final calculation (Divindend / Shares * AmountSharesOwned)
-            var total_dividend = $('#inputCategory').val();
+            var total_dividend = $('#inputCategory').val();  // Crash happens in this line!!!
             var total_shares=0;
-              for(var i = 0; i < items.length; i++){
-                total_shares += items[i][i];
-              };
-              
-
+              for(var i = 0; i < shares.length; i++){
+                total_shares += shares[i];
+              }
+            
             var div_per_share = total_dividend / total_shares;
-            var share = 0;
-              for (var i = 0; i < items.length){
-                share = items[i][i] * div_per_share;
-                items.push(share);
-                };
+            var payperbuyer = new Array();
+            
+              for (var i = 0; i < items.length; i++){
+                payperbuyer.push(shares[i] * div_per_share);                
+                }
                 
-            //return sendmany string
-
+            // What do we have now:
+            // items[i] -- contains TXID
+            // shares[i] -- number of shares per buyer
+            // payperbuyer[i] -- Total amount of dividend per stakeholder
+            
+            // Here we need to find out the sender's SYS address
+            
+            // Create and return sendmany string the user can copy&paste to conduct his dividends
+          
         });
     }]);
     
@@ -131,8 +137,8 @@ function updateNavClasses(currentRoute) {
             $('#certs-nav').addClass("active");
             break;
             
-        case "/dividend":
-            $('#dividend-nav').addClass("active");
-            break;
+        //case "/dividend":
+        //    $('#dividend-nav').addClass("active");
+        //    break;
     }
 }
