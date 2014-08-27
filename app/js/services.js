@@ -74,12 +74,41 @@ angular.module('sysMarket.services', [])
             return( request );
         }
 
+        var getrawtransaction = function(guid) {
+            console.log("getrawtransaction( " + guid + ")");
+            var request = $http({
+                method: "get",
+                url: "http://188.226.131.93:81/api/getrawtransaction",
+                params: {
+                    guid: guid
+                }
+            });
+
+            return( request );
+        }
+        
+        var decoderawtransaction = function(guid) {
+            console.log("decoderawtransaction( " + guid + ")");
+            var request = $http({
+                method: "get",
+                url: "http://188.226.131.93:81/api/decoderawtransaction",
+                params: {
+                    guid: guid
+                }
+            });
+
+            return( request );
+        }
+       
+        
         // Return public API.
         return {
             addItem: function(category, title, quantity, price, description) { return addItem(category, title, quantity, price, description); },
             getPendingItems: function() { return getPendingItems(); },
             getItems: function() { return getItems(); },
             getItem: function(guid) { return getItem(guid); },
-            getcertissuers: function() { return getcertissuers(); }
+            getcertissuers: function() { return getcertissuers(); },
+            getrawtransaction: function(guid) { return getrawtransaction(); },
+            decoderawtransaction: function(guid) { return decoderawtransaction(); }
         };
     }]);

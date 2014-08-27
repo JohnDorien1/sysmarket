@@ -38,8 +38,9 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
     }])
     
      .controller('CertCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        updateNavClasses($route.current.$$route.originalPath);
         //get certissuers from rpc
-        var request  = syscoinService.getcertissuers($routeParams.guid);
+        var request  = syscoinService.getcertissuers();
         request.then(function(response) {
             $scope.items = response.data;
             console.log("Got Cert info: ", response.data);
@@ -81,14 +82,14 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             var data = syscoinService.getItem(title);
             var items = new Array();
             var shares = new Array();
-            //create a loop to get 1) the buyers address and 2) the amount bought
+            //create a loop to get 1) the buyers Tx and 2) the amount of shares bought
                   for(var i = 0; i < data.length; i++){
                        items.push(data[i].accepts.txid);
                        shares.push(data[i].accepts.quantity);
                        }
             
-            //Do the final calculation (Divindend / Shares * AmountSharesOwned)
-            var total_dividend = $('#inputCategory').val();  // Crash happens in this line!!!
+            //Do the final calculation
+            var total_dividend = $('#inputCategory').val(); 
             var total_shares=0;
               for(var i = 0; i < shares.length; i++){
                 total_shares += shares[i];
@@ -108,8 +109,21 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             
             // Here we need to find out the sender's SYS address
             
+            var raw;
+            var txdata;
+              for(var i = 0; i < items.length; i++){
+                raw = syscoinService.getrawtransaction(item[i]);
+                txdata = syscoinService.decoderawtransaction(raw);
+                items[i] = txdata.vout.addresses;
+              }
+            
             // Create and return sendmany string the user can copy&paste to conduct his dividends
-          
+            var returnstring;
+            for(var i = 0; i < items.length; i++){
+              returnstring += "\"" + items[i] + "\"" + payperbuyer[i] + ",";            
+            }
+            // if that loop worked, only return the string somehow
+            $('inputTitle').val() = returnstring;
         });
     }]);
     
@@ -137,8 +151,8 @@ function updateNavClasses(currentRoute) {
             $('#certs-nav').addClass("active");
             break;
             
-        //case "/dividend":
-        //    $('#dividend-nav').addClass("active");
-        //    break;
+        case "/dividend":
+            $('#dividend-nav').addClass("active");
+            break;
     }
 }

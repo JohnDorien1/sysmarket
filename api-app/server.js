@@ -24,8 +24,8 @@ app.all('*', function(req, res, next) {
 var sysclient = new syscoin.Client({
     host: 'localhost',
     port: 8336,
-    user: 'user',
-    pass: 'pass',
+    user: 'sdfkjhsdmkfgbhsdmfjhksdhlsdfjieruesdfzheufhsdjf',
+    pass: 'asdfkjdfhvkchbkhadkjwhekfbevsdbdcksjdhfksjkfklshfk',
     timeout: 180000
 });
 
@@ -119,6 +119,30 @@ router.get('/getitem', function(req, res) {
         handleError(err);
 
         console.log('getitem: offerinfo result = ', result);
+
+        res.json( result );
+    });
+});
+
+router.get('/getrawtransaction', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getrawtransaction: getrawtransaction(' + req.query.guid + ')');
+    sysclient.getRawTransaction(req.query.guid, function(err, result, resHeaders) {
+        handleError(err);
+
+        console.log('getrawtransaction:  result = ', result);
+
+        res.json( result );
+    });
+});
+
+router.get('/decoderawtransaction', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('decodeRawTransaction: decodeRawTransaction(' + req.query.guid + ')');
+    sysclient.decodeRawTransaction(req.query.guid, function(err, result, resHeaders) {
+        handleError(err);
+
+        console.log('decodeRawTransaction:  result = ', result);
 
         res.json( result );
     });
