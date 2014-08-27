@@ -123,7 +123,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
               returnstring += "\"" + items[i] + "\"" + payperbuyer[i] + ",";            
             }
             // if that loop worked, only return the string somehow
-            $('inputTitle').val() = returnstring;
+            $('inputTitle').val() = returnstring; //trying to fill the offerguid field with the string but does not work
         });
     }]);
     
