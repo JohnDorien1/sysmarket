@@ -42,8 +42,8 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         //get certissuers from rpc
         var request  = syscoinService.getcertissuers();
         request.then(function(response) {
-            $scope.items = response.data;
-            console.log("Got Cert info: ", response.data);
+            $scope.items = response.data.items;
+            console.log("Got Cert info: ", response.data.items);
         });
     }])
 
@@ -79,15 +79,26 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             
             //collect input offerGUID and retrieve info from daemon
             var title = $('#inputTitle').val();
+            console.log("var title = ", title);
             var data = syscoinService.getItem(title);
+                    data.then(function(data) {
+                    $scope.item = data.data;
+                    console.log("Got offerinfo: ", data.data);
+                    
+                    return data;
+                    });
+            
             var items = new Array();
             var shares = new Array();
+            console.log("data var = ", data);
+            console.log("return data accepts 1 = ", data.accepts[1].txid);
             //create a loop to get 1) the buyers Tx and 2) the amount of shares bought
-                  for(var i = 0; i < data.length; i++){
-                       items.push(data[i].accepts.txid);
-                       shares.push(data[i].accepts.quantity);
+                  for(var i = 0; i < data.accepts.length; i++){
+                       items.push(data.accepts[i].txid);
+                       shares.push(data.accepts[i].quantity);
                        }
-            
+            console.log("data.title = ", data.title);
+            console.log("return data accepts 1 = ", data.accepts[1].txid);
             //Do the final calculation
             var total_dividend = $('#inputCategory').val(); 
             var total_shares=0;
@@ -108,7 +119,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             // payperbuyer[i] -- Total amount of dividend per stakeholder
             
             // Here we need to find out the sender's SYS address
-            
+            console.log("data array 2 = ", items[2]);
             var raw;
             var txdata;
               for(var i = 0; i < items.length; i++){
@@ -123,7 +134,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
               returnstring += "\"" + items[i] + "\"" + payperbuyer[i] + ",";            
             }
             // if that loop worked, only return the string somehow
-            $('inputTitle').val() = returnstring; //trying to fill the offerguid field with the string but does not work
+            //$('inputTitle').val() = returnstring; //trying to fill the offerguid field with the string but does not work
         });
     }]);
     

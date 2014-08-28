@@ -108,7 +108,7 @@ angular.module('sysMarket.services', [])
             getItems: function() { return getItems(); },
             getItem: function(guid) { return getItem(guid); },
             getcertissuers: function() { return getcertissuers(); },
-            getrawtransaction: function(guid) { return getrawtransaction(); },
-            decoderawtransaction: function(guid) { return decoderawtransaction(); }
+            getrawtransaction: function(guid) { return getrawtransaction(guid); },
+            decoderawtransaction: function(guid) { return decoderawtransaction(guid); }
         };
     }]);
