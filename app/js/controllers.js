@@ -47,6 +47,16 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
         });
     }])
 
+     .controller('AliasCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
+        updateNavClasses($route.current.$$route.originalPath);
+        //get certissuers from rpc
+        var request  = syscoinService.getaliases();
+        request.then(function(response) {
+            $scope.items = response.data;
+            console.log("Got Alias info: ", response.data);
+        });
+    }])
+    
     .controller('AddItemCtrl', ['$scope', '$route', '$routeParams', 'syscoinService', function($scope, $route, $routeParams, syscoinService) {
         updateNavClasses($route.current.$$route.originalPath);
 
@@ -81,12 +91,7 @@ angular.module('sysMarket.controllers', ['sysMarket.services'])
             var title = $('#inputTitle').val();
             console.log("var title = ", title);
             var data = syscoinService.getItem(title);
-                    data.then(function(data) {
-                    $scope.item = data.data;
-                    console.log("Got offerinfo: ", data.data);
-                    
-                    return data;
-                    });
+                    //data = data.data;
             
             var items = new Array();
             var shares = new Array();
@@ -144,6 +149,7 @@ function updateNavClasses(currentRoute) {
     $('#certs-nav').removeClass("active");
     $('#additem-nav').removeClass("active");
     $('#dividend-nav').removeClass("active");
+    $('#alias-nav').removeClass("active");
 
     switch(currentRoute) {
         case "/":
@@ -165,5 +171,9 @@ function updateNavClasses(currentRoute) {
         case "/dividend":
             $('#dividend-nav').addClass("active");
             break;
+            
+        case "/aliases":
+            $('#alias-nav').addClass("active");
+            break;            
     }
 }

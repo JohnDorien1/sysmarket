@@ -69,7 +69,7 @@ router.get('/getpendingitems', function(req, res) {
     sysclient.listTransactions("", function(err, result, resHeaders) {
         handleError(err);
 
-        console.log('getpendingitems: getpendingitems result = ', result);
+        //console.log('getpendingitems: getpendingitems result = ', result);
         var pendingItemCount = 0;
         for(var i = 0; i < result.length; i++) {
             if(result[i].address.indexOf("offeractivate") != -1 && result[i].confirmations == 0) {
@@ -83,18 +83,18 @@ router.get('/getpendingitems', function(req, res) {
 
 router.get('/getitems', function(req, res) {
     //category, title, quantity, price, [description], callback
-    console.log('getitems: offerlist("")');
+    console.log('getitems: offerscan("")');
     sysclient.offerScan("1","100", function(err, result, resHeaders) {
     handleError(err);
 
-    console.log('getitems: offerlist result = ', result);
+    //console.log('getitems: offerlist result = ', result);
 
     //iterate over all of the offers and get the full data
     var items = new Array();
     var totalItems = 0;
     var callbacks = 0;
     for(var i = 0; i < result.length; i++) {
-        console.log('result[' + i + '].offer = ' +  result[i].offer + ' ' + result[i].expired);
+        //console.log('result[' + i + '].offer = ' +  result[i].offer + ' ' + result[i].expired);
         if (result[i].hasOwnProperty("expired") == false) {
             totalItems ++;
             sysclient.offerInfo(result[i].offer, function(err, result2, resHeaders) {
@@ -118,7 +118,7 @@ router.get('/getitem', function(req, res) {
     sysclient.offerInfo(req.query.guid, function(err, result, resHeaders) {
         handleError(err);
 
-        console.log('getitem: offerinfo result = ', result);
+        console.log('getitem: offerinfo result received');
 
         res.json( result );
     });
@@ -130,7 +130,7 @@ router.get('/getrawtransaction', function(req, res) {
     sysclient.getRawTransaction(req.query.guid, function(err, result, resHeaders) {
         handleError(err);
 
-        console.log('getrawtransaction:  result = ', result);
+        console.log('getrawtransaction:  result received');
 
         res.json( result );
     });
@@ -142,7 +142,7 @@ router.get('/decoderawtransaction', function(req, res) {
     sysclient.decodeRawTransaction(req.query.guid, function(err, result, resHeaders) {
         handleError(err);
 
-        console.log('decodeRawTransaction:  result = ', result);
+        console.log('decodeRawTransaction:  result received ');
 
         res.json( result );
     });
@@ -178,6 +178,18 @@ router.get('/getcertissuers', function(req, res) {
         }}
     });
 });
+
+router.get('/getaliases', function(req, res) {
+    //category, title, quantity, price, [description], callback
+    console.log('getaliases: aliasscan("")');
+    sysclient.aliasScan("1","1000", function(err, result, resHeaders) {
+    handleError(err);
+
+    console.log('getaliases: aliasscan result = ', result);
+    res.json( result );
+    });
+});
+
 //general functions
 function handleError(err) {
     if (err) {
