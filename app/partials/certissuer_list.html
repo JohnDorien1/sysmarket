@@ -5,14 +5,16 @@
     <tr>
       <th>Certissuer Name</th>
       <th>Certissuer</th>
+      <th>Certificates (ID)</th>
+      <th>Certificates (Title)</th>
     </tr>
     </thead>
     <tbody>
       <tr class="item-row" ng-repeat="item in items">
         <td>{{ item.title }}</td>
         <td>{{ item.id }}</td>
-        <!--<td>{{ item.address }}</td>
-        <td>{{ item.price }}</td>-->
+        <td>{{ item.certificates.id }}</td>
+        <td>{{ item.certificates.name }}</td>
       </tr>
     </tbody>
   </table>

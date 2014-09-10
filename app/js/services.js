@@ -105,7 +105,7 @@ angular.module('sysMarket.services', [])
                 method: "get",
                 url: "http://188.226.131.93:81/api/decoderawtransaction",
                 params: {
-                    guid: guid
+                    guid: txid
                 }
             });
 

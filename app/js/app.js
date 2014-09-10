@@ -17,5 +17,6 @@ config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/getcertissuer', { controller:'CertCtrl', templateUrl:'partials/certissuer_list.html' });
     $routeProvider.when('/getaliases', { controller:'AliasCtrl', templateUrl:'partials/alias_list.html' });
     $routeProvider.when('/dividend', { controller:'DividendCtrl', templateUrl:'partials/div_calc.html' });
+    $routeProvider.when('/admin', { controller:'AdminCtrl', templateUrl:'admin/admin.html' });
     $routeProvider.otherwise({ redirectTo:'/' });
 }]);
