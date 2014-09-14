@@ -1,0 +1,27 @@
+<div class="template">
+	<h1>This is the admin interface. Click add to add orders to db</h1>
+	<br>
+	<br>
+	<table>
+  <table ng-if="items.length > 0" class="table table-hover table-striped">
+    <thead>
+    <tr>
+      <th>Item Name</th>
+      <th>Category</th>
+      <th>Quantity available</th>
+      <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr class="item-row" ng-repeat="item in items">
+      <form>
+        <td ng-model="data.title"><a href="#/item/{{ item.id }}">{{ item.title }}</a></td>
+        <td ng-model="data.category">{{ item.category }}</td>
+        <td ng-model="data.quantity">{{ item.quantity }}</td>
+        <td ng-model="data.price">{{ item.price }}</td>
+        <td><button id="save" ng-click="submitData(data, 'ajaxSubmitResult2')">Add record to DB</button></td>
+      </form>
+       </tr>
+    </tbody>
+</div>
+
